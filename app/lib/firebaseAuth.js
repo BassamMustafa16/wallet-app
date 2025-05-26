@@ -7,7 +7,7 @@ import {
   onAuthStateChanged as firebaseOnAuthStateChanged, // Handle auth state changes
   onIdTokenChanged as firebaseOnIdTokenChanged, // Handle ID token changes
 } from "firebase/auth";
-import auth from "@/app/lib/firebaseConfig"; // Import your initialized Firebase app
+import { auth } from "@/app/lib/firebaseConfig"; // Import your initialized Firebase app
 
 export function onAuthStateChanged(cb) {
   // Attach the callback function to the auth state change listener

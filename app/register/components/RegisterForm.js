@@ -1,7 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import auth from "@/app/lib/firebaseConfig";
+import { auth, db } from "@/app/lib/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import Label from "@/app/components/Label";
 import Textbox from "@/app/components/Textbox";
@@ -16,7 +17,7 @@ export default function RegisterForm() {
   const hasUppercase = /[A-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
@@ -41,20 +42,25 @@ export default function RegisterForm() {
       );
       return;
     }
-    createUserWithEmailAndPassword(auth, data.email, data.password)
-      .then((userCredential) => {
-        // Signed up successfully!
-        const user = userCredential.user;
-        console.log("User signed up:", user);
-        alert("Registration successful!");
-        router.push("/");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error("Sign up error:", errorCode, errorMessage);
-        // Display error message to the user
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      const user = userCredential.user;
+      await setDoc(doc(db, "users", user.uid), {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
       });
+
+      alert("Account created!");
+      router.push("/");
+    } catch (error) {
+      alert("Error creating account: " + error.message);
+      return;
+    }
   };
 
   return (

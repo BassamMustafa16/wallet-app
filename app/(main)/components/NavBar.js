@@ -1,8 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
-import auth from "@/app/lib/firebaseConfig";
+import { auth } from "@/app/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
-
 
 export default function NavBar() {
   const router = useRouter();

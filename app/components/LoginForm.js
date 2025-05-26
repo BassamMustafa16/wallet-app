@@ -1,14 +1,12 @@
 "use client";
 import { signInWithGoogle } from "@/app/lib/firebaseAuth";
-import { useRouter } from "next/navigation";
 import Textbox from "./Textbox";
 import Label from "./Label";
 import Button from "./Button";
-import auth from "@/app/lib/firebaseConfig";
+import { auth } from "@/app/lib/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginForm() {
-  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -17,7 +15,6 @@ export default function LoginForm() {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       alert("Login successful!");
-      router.push("/transactions");
     } catch (error) {
       alert("Login failed: " + error.message);
     }
