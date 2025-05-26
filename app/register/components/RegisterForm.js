@@ -1,14 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
-import app from "@/app/lib/firebaseConfig";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import auth from "@/app/lib/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import Label from "@/app/components/Label";
 import Textbox from "@/app/components/Textbox";
 import Button from "@/app/components/Button";
 export default function RegisterForm() {
   const router = useRouter();
-  const auth = getAuth(app); // Get the Auth instance
   const [password, setPassword] = useState("");
 
   // Password requirement checks
@@ -47,7 +46,8 @@ export default function RegisterForm() {
         // Signed up successfully!
         const user = userCredential.user;
         console.log("User signed up:", user);
-        // You can redirect the user or update UI here
+        alert("Registration successful!");
+        router.push("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -55,8 +55,6 @@ export default function RegisterForm() {
         console.error("Sign up error:", errorCode, errorMessage);
         // Display error message to the user
       });
-    alert("Registration successful!");
-    router.push("/")
   };
 
   return (
