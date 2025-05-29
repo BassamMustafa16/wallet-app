@@ -1,51 +1,70 @@
 "use client";
 import AddAccountForm from "./components/AddAccountForm";
+import AccountCard from "./components/AccountCard";
 import { useEffect, useState } from "react";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from "@/app/lib/firebaseConfig";
-import { fetchAccounts } from "@/app/(main)/(utils)/fetchAccounts";
+import { auth } from "@/app/lib/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
+import { fetchAccounts } from "@/app/(main)/(utils)/accountUtils";
 
 export default function AccountsPage() {
   const [showAddAccountForm, setShowAddAccountForm] = useState(false);
   const [accounts, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null); // <-- use state for user
 
-  const user = auth.currentUser;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
   useEffect(() => {
     if (!user) return;
 
-    fetchAccounts(user.uid).then(setAccounts);
+    setLoading(true); // set loading true before fetching
+    console.log("Fetching accounts for user:", user.uid);
+    fetchAccounts(user.uid).then((accounts) => {
+      console.log("Fetched accounts:");
+      setAccounts(accounts);
+      console.log(accounts);
+      setLoading(false); // set loading false after fetching
+    });
   }, [user]);
+
+  if (user === null) {
+    return (
+      <div className="p-5">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  if (!user) {
+    return (
+      <div className="p-5">
+        <p>Please sign in to view your accounts.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-5">
       {showAddAccountForm && (
-        <AddAccountForm setShowAddAccountForm={setShowAddAccountForm} setAccounts={setAccounts}/>
+        <AddAccountForm
+          setShowAddAccountForm={setShowAddAccountForm}
+          setAccounts={setAccounts}
+        />
       )}
-      {accounts.length > 0 ? (
+      {loading ? (
+        <p>Loading accounts...</p>
+      ) : accounts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {accounts.map((account) => (
-            <div
+            <AccountCard
               key={account.id}
-              className="border p-5 rounded-xl flex flex-col gap-2"
-            >
-              <h3 className="text-lg font-bold">{account.accountName}</h3>
-              <p>
-                Initial Credit: ${account.initialCredit?.toFixed(2) ?? "0.00"}
-              </p>
-              <p>
-                Total Expense: ${account.totalExpense?.toFixed(2) ?? "0.00"}
-              </p>
-              <p>Total Income: ${account.totalIncome?.toFixed(2) ?? "0.00"}</p>
-              <p>
-                Total Transfer Out: $
-                {account.totalTransferOut?.toFixed(2) ?? "0.00"}
-              </p>
-              <p>
-                Total Transfer In: $
-                {account.totalTransferIn?.toFixed(2) ?? "0.00"}
-              </p>
-              <p>Balance: ${account.balance?.toFixed(2) ?? "0.00"}</p>
-            </div>
+              account={account}
+              setAccounts={setAccounts}
+            />
           ))}
         </div>
       ) : (

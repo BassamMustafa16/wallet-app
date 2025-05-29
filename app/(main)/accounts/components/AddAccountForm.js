@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
 import { auth, db } from "@/app/lib/firebaseConfig";
-import { fetchAccounts } from "@/app/(main)/(utils)/fetchAccounts";
 
 export default function AddAccountForm({ setShowAddAccountForm, setAccounts }) {
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,7 @@ export default function AddAccountForm({ setShowAddAccountForm, setAccounts }) {
     }
 
     try {
-      await addDoc(collection(db, "accounts"), {
+      const docRef = await addDoc(collection(db, "accounts"), {
         accountName,
         initialCredit,
         totalExpense: 0,
@@ -36,7 +35,20 @@ export default function AddAccountForm({ setShowAddAccountForm, setAccounts }) {
       });
       alert("Account added!");
       setShowAddAccountForm(false);
-      fetchAccounts(user.uid).then(setAccounts);
+      setAccounts((prev) => [
+        ...prev,
+        {
+          id: docRef.id,
+          accountName,
+          initialCredit,
+          totalExpense: 0,
+          totalIncome: 0,
+          totalTransferOut: 0,
+          totalTransferIn: 0,
+          balance: initialCredit,
+          uid: user.uid,
+        },
+      ]);
     } catch (error) {
       alert("Error adding account: " + error.message);
     } finally {

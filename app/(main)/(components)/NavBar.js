@@ -2,14 +2,24 @@
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebaseConfig";
 import { signOut } from "firebase/auth";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function NavBar() {
   const router = useRouter();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
+
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.push("/");
     } catch (error) {
       alert("Logout failed: " + error.message);
     }
