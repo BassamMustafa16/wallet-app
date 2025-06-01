@@ -23,11 +23,8 @@ export default function AccountsPage() {
     if (!user) return;
 
     setLoading(true); // set loading true before fetching
-    console.log("Fetching accounts for user:", user.uid);
     fetchAccounts(user.uid).then((accounts) => {
-      console.log("Fetched accounts:");
       setAccounts(accounts);
-      console.log(accounts);
       setLoading(false); // set loading false after fetching
     });
   }, [user]);

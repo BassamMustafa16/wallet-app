@@ -1,9 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/app/lib/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Label from "@/app/components/Label";
 import Textbox from "@/app/components/Textbox";
 import Button from "@/app/components/Button";
@@ -16,6 +19,15 @@ export default function RegisterForm() {
   const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(password);
   const hasUppercase = /[A-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push("/transactions");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,7 +68,6 @@ export default function RegisterForm() {
       });
 
       alert("Account created!");
-      router.push("/");
     } catch (error) {
       alert("Error creating account: " + error.message);
       return;

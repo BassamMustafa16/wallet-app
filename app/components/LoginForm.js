@@ -7,6 +7,14 @@ import { auth } from "@/app/lib/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginForm() {
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      console.error("Error signing in with Google:", error);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -45,7 +53,10 @@ export default function LoginForm() {
           <Button content="Register" type="button" to="/register" />
         </div>
       </form>
-      <button onClick={signInWithGoogle} className="border p-3 rounded-xl">
+      <button
+        onClick={handleGoogleSignIn}
+        className="border p-3 rounded-xl"
+      >
         Sign in with Google
       </button>
     </div>

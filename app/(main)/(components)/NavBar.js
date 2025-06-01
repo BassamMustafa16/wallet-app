@@ -27,13 +27,13 @@ export default function NavBar() {
 
   return (
     <ul className="flex flex-row border-b p-2">
-      <li className="p-2 border-r" onClick={() => router.push("/transactions")}>
+      <li className="p-2 border-r cursor-pointer" onClick={() => router.push("/transactions")}>
         Transactions
       </li>
-      <li className="p-2 border-r" onClick={() => router.push("/accounts")}>
+      <li className="p-2 border-r cursor-pointer" onClick={() => router.push("/accounts")}>
         Accounts
       </li>
-      <li className="p-2" onClick={handleLogout}>
+      <li className="p-2 cursor-pointer" onClick={handleLogout}>
         Logout
       </li>
     </ul>
