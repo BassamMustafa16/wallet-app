@@ -1,14 +1,15 @@
 "use client";
+import defaultCategories from "../data/defaultCategories.json";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/app/lib/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import Label from "@/app/components/Label";
-import Textbox from "@/app/components/Textbox";
+import Input from "@/app/components/Input";
 import Button from "@/app/components/Button";
 export default function RegisterForm() {
   const router = useRouter();
@@ -67,6 +68,14 @@ export default function RegisterForm() {
         email: data.email,
       });
 
+      await Promise.all(
+        defaultCategories.map((category) =>
+          addDoc(collection(db, "users", user.uid, "categories"), {
+            categoryName: category.categoryName,
+            subCategories: category.subCategories,
+          })
+        )
+      );
       alert("Account created!");
     } catch (error) {
       alert("Error creating account: " + error.message);
@@ -81,7 +90,7 @@ export default function RegisterForm() {
     >
       {/* First Name Input */}
       <Label content="First Name" labelFor="firstNameInput" />
-      <Textbox
+      <Input
         id="firstNameInput"
         type="text"
         placeholder="John, Mike..."
@@ -89,7 +98,7 @@ export default function RegisterForm() {
       />
       {/* Last Name Input */}
       <Label content="Last Name" labelFor="lastNameInput" />
-      <Textbox
+      <Input
         id="lastNameInput"
         type="text"
         placeholder="Adam, Noah..."
@@ -97,7 +106,7 @@ export default function RegisterForm() {
       />
       {/* Email Input */}
       <Label content="Email" labelFor="emailInput" />
-      <Textbox
+      <Input
         id="emailInput"
         type="email"
         placeholder="example@test.com"
@@ -105,7 +114,7 @@ export default function RegisterForm() {
       />
       {/* Password Input */}
       <Label content="Password" labelFor="passwordInput" />
-      <Textbox
+      <Input
         id="passwordInput"
         type="password"
         placeholder="Choose a Strong Password"

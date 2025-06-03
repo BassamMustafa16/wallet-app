@@ -23,7 +23,7 @@ export default function AddAccountForm({ setShowAddAccountForm, setAccounts }) {
     }
 
     try {
-      const docRef = await addDoc(collection(db, "accounts"), {
+      const docRef = await addDoc(collection(db, "users", user.uid, "accounts"), {
         accountName,
         initialCredit,
         totalExpense: 0,

@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/firebaseConfig";
-import { signOut } from "firebase/auth";
 import { useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function NavBar() {
   const router = useRouter();

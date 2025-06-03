@@ -1,0 +1,143 @@
+[
+  {
+    "categoryName": "Food & Drinks",
+    "subCategories": [
+      "Groceries",
+      "Meat, Poultry, Fish",
+      "Diary",
+      "Fruit & Vegetables",
+      "Resturant & Fast-food",
+      "Bar, Café"
+    ]
+  },
+  {
+    "categoryName": "Shopping",
+    "subCategories": [
+      "Clothes & Shoes",
+      "Jewel & Accessories",
+      "Health & Beauty",
+      "Kids",
+      "Home, Garden",
+      "Pets, Animals",
+      "Electronics, accessories",
+      "Gifts, Joy",
+      "Stationery, Tools",
+      "Free Time",
+      "Drug-store, Chemist"
+    ]
+  },
+  {
+    "categoryName": "Housing",
+    "subCategories": [
+      "Furniture",
+      "Applicants",
+      "Energy, Utalities",
+      "Services",
+      "Maintenance, Repairs",
+      "Requirments",
+      "Housewares"
+    ]
+  },
+  {
+    "categoryName": "Transportation",
+    "subCategories": [
+      "Public Transport",
+      "Taxi",
+      "Long Distance",
+      "Business Trips"
+    ]
+  },
+  {
+    "categoryName": "Vehicle",
+    "subCategories": [
+      "Fuel",
+      "Parking",
+      "Vehicle Maintenance",
+      "Car Buying",
+      "Accessories",
+      "Road Fees",
+      "Car Washing",
+      "Licensing"
+    ]
+  },
+  {
+    "categoryName": "Life_Entratinment",
+    "subCategories": [
+      "Health Care, Doctor",
+      "Wellness, Beauty",
+      "Active Sport, Fitness",
+      "Culture, Sports Event",
+      "Life Event",
+      "Hobbies",
+      "Education, Development",
+      "Books, Audio, Subscription",
+      "Tv, Streaming",
+      "Holiday, Trips, Hotel",
+      "Charity",
+      "Tips",
+      "Gift",
+      "Alcohol, Tobaco"
+    ]
+  },
+  {
+    "categoryName": "Communication_pc",
+    "subCategories": [
+      "Phone, Cell Phone",
+      "Internet",
+      "Software, Apps, Games"
+    ]
+  },
+  {
+    "categoryName": "Financial_expenses",
+    "subCategories": [
+      "Taxes",
+      "Insurances",
+      "Interest, Loan",
+      "Fines",
+      "Advisory",
+      "Charges, Fees",
+      "Child Support"
+    ]
+  },
+  {
+    "categoryName": "Investments",
+    "subCategories": [
+      "Realty",
+      "Financial Investment",
+      "Savings",
+      "Collections"
+    ]
+  },
+  {
+    "categoryName": "Income",
+    "subCategories": [
+      "Salary",
+      "Interests, divdends",
+      "Bouns",
+      "Rental Income",
+      "Dues & Grants",
+      "Lending, Renting",
+      "Checks, Coupons",
+      "Refunds",
+      "Parents",
+      "Gifts",
+      "Free Work"
+    ]
+  },
+  {
+    "categoryName": "Trips",
+    "subCategories": [
+      "Transportation",
+      "Accommodation",
+      "Activities",
+      "Food & Drinks",
+      "Other"
+    ]
+  },
+  {
+    "categoryName": "Others",
+    "subCategories": [
+      "Balancing"
+    ]
+  }
+]

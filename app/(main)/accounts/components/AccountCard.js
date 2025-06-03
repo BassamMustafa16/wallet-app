@@ -1,7 +1,7 @@
 import { deleteAccount } from "../../(utils)/accountUtils";
 import { useState } from "react";
 
-export default function AccountCard({ account, setAccounts }) {
+export default function AccountCard({ account, setAccounts, userId }) {
   const [showDetails, setShowDetails] = useState(false);
   const handleDelete = async () => {
     if (
@@ -10,7 +10,7 @@ export default function AccountCard({ account, setAccounts }) {
       )
     ) {
       try {
-        await deleteAccount(account.id);
+        await deleteAccount(account.id, userId);
         console.log(`Account deleted.`);
         // Refresh accounts list
         setAccounts((prev) => prev.filter((a) => a.id !== account.id));

@@ -1,33 +1,13 @@
 "use client";
 import AddAccountForm from "./components/AddAccountForm";
 import AccountCard from "./components/AccountCard";
-import { useEffect, useState } from "react";
-import { auth } from "@/app/lib/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
-import { fetchAccounts } from "@/app/(main)/(utils)/accountUtils";
+import { useState } from "react";
+
+import { useData } from "@/app/(main)/contexts/AccountsContext";
 
 export default function AccountsPage() {
   const [showAddAccountForm, setShowAddAccountForm] = useState(false);
-  const [accounts, setAccounts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null); // <-- use state for user
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (!user) return;
-
-    setLoading(true); // set loading true before fetching
-    fetchAccounts(user.uid).then((accounts) => {
-      setAccounts(accounts);
-      setLoading(false); // set loading false after fetching
-    });
-  }, [user]);
+  const { accounts, setAccounts, loading, user } = useData();
 
   if (user === null) {
     return (
@@ -61,6 +41,7 @@ export default function AccountsPage() {
               key={account.id}
               account={account}
               setAccounts={setAccounts}
+              userId={user.uid}
             />
           ))}
         </div>

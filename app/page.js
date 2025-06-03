@@ -12,31 +12,35 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Handle user creation after redirect
-    getRedirectResult(auth).then(async (result) => {
-      if (result?.user) {
-        // Fill user data in Firestore if new
-        const user = result.user;
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (!userSnap.exists()) {
-          const nameParts = user.displayName?.split(" ") || [];
-          await setDoc(userRef, {
-            firstName: nameParts[0] || "",
-            lastName: nameParts.slice(1).join(" ") || "",
-            email: user.email,
-          });
-        }
-      }
-    });
-
-    // Always listen for auth state
+    // Always set up the auth state listener first!
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         router.push("/transactions");
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
+
+    // Then handle redirect result for Firestore user creation
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (result?.user) {
+          const user = result.user;
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+          if (!userSnap.exists()) {
+            const nameParts = user.displayName?.split(" ") || [];
+            await setDoc(userRef, {
+              firstName: nameParts[0] || "",
+              lastName: nameParts.slice(1).join(" ") || "",
+              email: user.email,
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Redirect sign-in error:", error);
+      });
 
     return () => unsubscribe();
   }, [router]);
