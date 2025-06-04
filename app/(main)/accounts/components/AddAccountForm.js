@@ -31,7 +31,6 @@ export default function AddAccountForm({ setShowAddAccountForm, setAccounts }) {
         totalTransferOut: 0,
         totalTransferIn: 0,
         balance: initialCredit,
-        uid: user.uid,
       });
       alert("Account added!");
       setShowAddAccountForm(false);
@@ -46,7 +45,6 @@ export default function AddAccountForm({ setShowAddAccountForm, setAccounts }) {
           totalTransferOut: 0,
           totalTransferIn: 0,
           balance: initialCredit,
-          uid: user.uid,
         },
       ]);
     } catch (error) {

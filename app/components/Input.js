@@ -6,6 +6,9 @@ export default function Input({
   value,
   onChange,
   defaultValue,
+  min,
+  step,
+  required = true,
 }) {
   return (
     <input
@@ -16,8 +19,10 @@ export default function Input({
       onChange={onChange}
       name={name}
       defaultValue={defaultValue}
+      min={min}
+      step={step}
       className="border rounded-xl p-2 w-full"
-      required
+      required={required}
     ></input>
   );
 }

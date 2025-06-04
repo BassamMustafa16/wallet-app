@@ -9,6 +9,7 @@ const AccountsContext = createContext();
 export function AccountsProvider({ children }) {
   const [accounts, setAccounts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [labels, setLabels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -42,6 +43,7 @@ export function AccountsProvider({ children }) {
         setLoading(false);
       }
     };
+    setLoading(true);
     const fetchCategories = async () => {
       try {
         const categoriesRef = collection(db, "users", user.uid, "categories");
@@ -58,13 +60,31 @@ export function AccountsProvider({ children }) {
         setLoading(false);
       }
     };
+    setLoading(true);
+    const fetchLabels = async () => {
+      try {
+        const labelsRef = collection(db, "users", user.uid, "labels");
+        const snapshot = await getDocs(labelsRef);
+        const labelsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setLabels(labelsData);
+      } catch (error) {
+        console.error("Error fetching labels:", error);
+        setLabels([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchAccounts();
     fetchCategories();
+    fetchLabels();
   }, [user]);
 
   return (
     <AccountsContext.Provider
-      value={{ accounts, setAccounts, categories, loading, user }}
+      value={{ accounts, setAccounts, categories, labels, loading, user }}
     >
       {children}
     </AccountsContext.Provider>

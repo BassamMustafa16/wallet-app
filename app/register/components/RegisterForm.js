@@ -1,5 +1,6 @@
 "use client";
 import defaultCategories from "../data/defaultCategories.json";
+import defaultLabels from "../data/defaultLabels.json";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/app/lib/firebaseConfig";
 import {
@@ -73,6 +74,14 @@ export default function RegisterForm() {
           addDoc(collection(db, "users", user.uid, "categories"), {
             categoryName: category.categoryName,
             subCategories: category.subCategories,
+          })
+        )
+      );
+      await Promise.all(
+        defaultLabels.map((label) =>
+          addDoc(collection(db, "users", user.uid, "labels"), {
+            name: label.name,
+            color: label.color,
           })
         )
       );
