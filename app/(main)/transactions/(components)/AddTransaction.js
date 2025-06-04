@@ -3,11 +3,16 @@ import Input from "@/app/components/Input";
 import { useState, useEffect } from "react";
 import { useData } from "../../contexts/AccountsContext";
 export default function AddTransactionForm({ setShowAddTransactionForm }) {
-  const { categories } = useData();
-  const [selectedCategory, setSelectedCategory] = useState(
-    categories[0].categoryName
-  );
+  const { categories = [] } = useData();
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [subcategories, setSubcategories] = useState([]);
+
+  // Set default selected category when categories load
+  useEffect(() => {
+    if (categories.length > 0 && !selectedCategory) {
+      setSelectedCategory(categories[0].categoryName);
+    }
+  }, [categories, selectedCategory]);
 
   useEffect(() => {
     const filteredCategory = categories.find(
